@@ -64,6 +64,7 @@ Plugin 'mattreduce/vim-mix'
 
 " Rust
 Plugin 'rust-lang/rust.vim'
+Plugin 'cespare/vim-toml'
 
 " Latex
 Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
