@@ -78,6 +78,10 @@ Plugin 'hukl/Smyck-Color-Scheme'
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'jacoborus/tender'
+Plugin 'rakr/vim-one'
+Plugin 'mkarmona/colorsbox'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
