@@ -101,7 +101,7 @@ syntax on
     silent! colorscheme = 'PaperColor'
     let g:airline_theme='PaperColor'
  else
-    silent colorscheme solarized
+    silent! colorscheme solarized
     let g:airline_theme='solarized'
  endif
 
