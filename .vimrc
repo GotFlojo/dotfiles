@@ -96,7 +96,15 @@ syntax on
  else
      set background=dark
  endif
- colorscheme solarized
+
+ if &term == "putty-256color"
+    silent! colorscheme = 'PaperColor'
+    let g:airline_theme='PaperColor'
+ else
+    colorscheme solarized
+    let g:airline_theme='solarized'
+ endif
+
 
 
 " Uncomment the following to have Vim load indentation rules according to the
@@ -300,7 +308,7 @@ xnoremap  `  s``<Esc>P<Right>
 "-------------------------------------------------------------------------------
 " airline
 "-------------------------------------------------------------------------------
-let g:airline_theme='solarized'
+" let g:airline_theme='solarized'
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#bufferline#enabled=1
 let g:airline_section_y='%{strlen(&fenc)?&fenc:&enc},[%{&fileformat}][%b,0x%B]'
