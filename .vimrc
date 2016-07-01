@@ -8,6 +8,8 @@
 "-------------------------------------------------------------------------------
 set nocompatible
 
+" Set 256 color mode coz what the heck
+set t_Co=256
 "-------------------------------------------------------------------------------
 "Vundle Plugin Management
 "------------------------------------------------------------------------------
@@ -97,7 +99,7 @@ syntax on
      set background=dark
  endif
 
- if &term == "putty-256color"
+ if &term == "putty-256color" || &term == "screen-256color"
     silent! colorscheme PaperColor
     silent! let g:airline_theme='PaperColor'
  else
