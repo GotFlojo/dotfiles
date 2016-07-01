@@ -98,7 +98,7 @@ syntax on
  endif
 
  if &term == "putty-256color"
-    silent! colorscheme = 'PaperColor'
+    silent! colorscheme PaperColor
     let g:airline_theme='PaperColor'
  else
     silent! colorscheme solarized
