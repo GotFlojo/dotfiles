@@ -99,10 +99,10 @@ syntax on
 
  if &term == "putty-256color"
     silent! colorscheme PaperColor
-    let g:airline_theme='PaperColor'
+    silent! let g:airline_theme='PaperColor'
  else
     silent! colorscheme solarized
-    let g:airline_theme='solarized'
+    silent! let g:airline_theme='solarized'
  endif
 
 
