@@ -97,7 +97,10 @@ syntax on
      set background=dark
  endif
 
- if &term == "putty-256color"
+"set colorscheme if putty or tmux because solarized does not seem to work well with these
+ if &term == "putty-256color" || &term == "screen-256color"
+    silent! colorscheme PaperColor
+    silent! let g:airline_theme='PaperColor'
     silent! colorscheme PaperColor
     silent! let g:airline_theme='PaperColor'
  else
