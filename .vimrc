@@ -8,6 +8,8 @@
 "-------------------------------------------------------------------------------
 set nocompatible
 
+" Set 256 color mode coz what the heck
+set t_Co=256
 "-------------------------------------------------------------------------------
 "Vundle Plugin Management
 "------------------------------------------------------------------------------
@@ -71,6 +73,7 @@ Plugin 'pangloss/vim-Javascript'
 
 " Rust
 Plugin 'rust-lang/rust.vim'
+Plugin 'cespare/vim-toml'
 
 " Latex
 Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
@@ -82,6 +85,10 @@ Plugin 'hukl/Smyck-Color-Scheme'
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'jacoborus/tender'
+Plugin 'rakr/vim-one'
+Plugin 'mkarmona/colorsbox'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -102,7 +109,16 @@ syntax on
  else
      set background=dark
  endif
- colorscheme solarized
+
+"set colorscheme if putty or tmux because solarized does not seem to work well with these
+ if &term == "putty-256color" || &term == "screen-256color"
+    silent! colorscheme PaperColor
+    silent! let g:airline_theme='PaperColor'
+ else
+    silent! colorscheme solarized
+    silent! let g:airline_theme='solarized'
+ endif
+
 
 
 " Uncomment the following to have Vim load indentation rules according to the
@@ -306,7 +322,7 @@ xnoremap  `  s``<Esc>P<Right>
 "-------------------------------------------------------------------------------
 " airline
 "-------------------------------------------------------------------------------
-let g:airline_theme='solarized'
+" let g:airline_theme='solarized'
 let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#bufferline#enabled=1
 let g:airline_section_y='%{strlen(&fenc)?&fenc:&enc},[%{&fileformat}][%b,0x%B]'
