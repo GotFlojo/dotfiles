@@ -9,89 +9,80 @@
 set nocompatible
 
 " Set 256 color mode coz what the heck
-set t_Co=256
+"set t_Co=256
 "-------------------------------------------------------------------------------
 "Vundle Plugin Management
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "------------------------------------------------------------------------------
 filetype off
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively,  pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle,  required
-Plugin 'gmarik/Vundle.vim'
+call plug#begin()
 
 " General
-Plugin 'bling/vim-airline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jeffkreeftmeijer/vim-numbertoggle'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'kien/ctrlp.vim'
-Plugin 'terryma/vim-multiple-cursors'
+Plug 'bling/vim-airline'
+Plug 'scrooloose/nerdtree'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'kien/ctrlp.vim'
+Plug 'terryma/vim-multiple-cursors'
 
 " Vim HardMode disables cursor keys and hjkl
-Plugin 'wikitopian/hardmode'
+Plug 'wikitopian/hardmode'
 
 " Programming
-Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'godlygeek/tabular'
-Plugin 'valloric/youcompleteme'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdcommenter'
+Plug 'godlygeek/tabular'
+"Plug 'valloric/youcompleteme'
 
 " Python
-Plugin 'nvie/vim-flake8'
-Plugin 'davidhalter/jedi-vim'
+Plug 'nvie/vim-flake8'
+Plug 'davidhalter/jedi-vim'
 
 " C/CP
-"Plugin 'C'
+"Plug 'C'
 
 " Clojure
-Plugin 'guns/vim-clojure-static'
-Plugin 'guns/vim-sexp'
-Plugin 'tpope/vim-sexp-mappings-for-regular-people'
-Plugin 'tpope/vim-fireplace'
-Plugin 'bhurlow/vim-parinfer'
-Plugin 'amdt/vim-niji'
+Plug 'guns/vim-clojure-static'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'tpope/vim-fireplace'
+Plug 'bhurlow/vim-parinfer'
+Plug 'amdt/vim-niji'
 
 " Erlang
-Plugin 'jimenezrick/vimerl' 
+Plug 'jimenezrick/vimerl' 
 
 " Elixir
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'mattreduce/vim-mix'
+Plug 'elixir-lang/vim-elixir'
+Plug 'mattreduce/vim-mix'
 
 " HTML
-Plugin 'mattn/emmet-vim'
-Plugin 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
+Plug 'ap/vim-css-color'
 
 " Javascript
-Plugin 'pangloss/vim-Javascript'
+Plug 'pangloss/vim-Javascript'
 
 " Rust
-Plugin 'rust-lang/rust.vim'
-Plugin 'cespare/vim-toml'
-
-" Latex
-Plugin 'git://git.code.sf.net/p/vim-latex/vim-latex'
+Plug 'rust-lang/rust.vim'
+Plug 'cespare/vim-toml'
 
 " Color schemes "
-Plugin 'noahfrederick/vim-hemisu'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'hukl/Smyck-Color-Scheme'
-Plugin 'NLKNguyen/papercolor-theme'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'jacoborus/tender'
-Plugin 'rakr/vim-one'
-Plugin 'mkarmona/colorsbox'
+Plug 'noahfrederick/vim-hemisu'
+Plug 'altercation/vim-colors-solarized'
+Plug 'hukl/Smyck-Color-Scheme'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'jacoborus/tender'
+Plug 'rakr/vim-one'
+Plug 'mkarmona/colorsbox'
 
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 filetype plugin indent on    " required
 
 
@@ -113,28 +104,11 @@ syntax on
 "set colorscheme if putty or tmux because solarized does not seem to work well with these
  if &term == "putty-256color" || &term == "screen-256color"
     silent! colorscheme PaperColor
-    silent! let g:airline_theme='PaperColor'
+    "silent! let g:airline_theme='papercolor'
  else
     silent! colorscheme solarized
-    silent! let g:airline_theme='solarized'
+    "silent! let g:airline_theme='solarized'
  endif
-
-
-
-" Uncomment the following to have Vim load indentation rules according to the
-" detected filetype. Per default Debian Vim only load filetype specific
-" plugins.
-"-------------------------------------------------------------------------------
-" Enable file type detection. Use the default filetype settings.
-" Also load indent files, to automatically do language-dependent indenting.
-"-------------------------------------------------------------------------------
-if has("autocmd")
-  filetype on
-  filetype plugin on
-  filetype indent on
-endif
-
-
 
 " The following are commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
@@ -331,7 +305,7 @@ let g:airline_section_z='%P : %l/%L: %c%V'
 "------------------------------------------------------------------------------
 " syntastic
 "------------------------------------------------------------------------------
-let g:syntastic_cpp_compiler_options="-std=c++11 -Wall -Wextra"
+"let g:syntastic_cpp_compiler_options="-std=c++11 -Wall -Wextra"
 "let g:syntastic_cpp_compiler_options = '-std=c++0x'
 
 "------------------------------------------------------------------------------
