@@ -1,0 +1,16 @@
+[user]
+	name = Florian Fischer
+	email = gotflojo@users.noreply.github.com
+[credential]
+	helper = osxkeychain
+[core]
+	editor = /usr/local/bin/nvim
+	excludefiles = /Users/flojo/.gitignore_global
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p

@@ -53,6 +53,7 @@ Plugin 'guns/vim-sexp'
 Plugin 'tpope/vim-sexp-mappings-for-regular-people'
 Plugin 'tpope/vim-fireplace'
 Plugin 'bhurlow/vim-parinfer'
+Plugin 'amdt/vim-niji'
 
 " Erlang
 Plugin 'jimenezrick/vimerl' 
@@ -61,6 +62,12 @@ Plugin 'jimenezrick/vimerl'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'mattreduce/vim-mix'
 
+" HTML
+Plugin 'mattn/emmet-vim'
+Plugin 'ap/vim-css-color'
+
+" Javascript
+Plugin 'pangloss/vim-Javascript'
 
 " Rust
 Plugin 'rust-lang/rust.vim'
