@@ -2,7 +2,6 @@
 "
 "===================================================================================
 "GENERAL SETTINGS {{{
-"" Consistency to C -> c$ and D -> d$1
 "===================================================================================
 "-------------------------------------------------------------------------------
 " Use Vim settings, rather then Vi settings.
@@ -23,14 +22,12 @@ call plug#begin('~/.config/nvim/plugged')
 " General
 Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdtree'
-" Plug 'jeffkreeftmeijer/vim-numbertoggle'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'zirrostig/vim-schlepp'
 "Plug 'kien/ctrlp.vim'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet' | Plug 'Shougo/neosnippet-snippets'
 
@@ -44,6 +41,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
+" Client vor Language Server specifilation
+" This is for selfcompiling
+" Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'make release'}
+" This is for prebuild binarie
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 " Plug 'valloric/youcompleteme'
 
 " Python
@@ -102,7 +104,9 @@ filetype plugin indent on    " required
 "}}}
 " Vim5 and later versions support syntax highlighting. Uncommenting the next line enables syntax highlighting by default.
 " Switch syntax highlighting on.
-syntax on
+if has('syntax')
+  syntax on
+endif
 
 
 "-------------------------------------------------------------------------------
@@ -116,11 +120,13 @@ syntax on
      set background=dark
  endif
 
+
+" This enables trueclors but messes up solarized
 " if has("termguicolors")
 "      set termguicolors
 " endif
 "let g:solarized_termcolors=256
-colorscheme solarized
+silent!colorscheme solarized
 "}}}
 
 "-------------------------------------------------------------------------------
@@ -280,8 +286,6 @@ set statusline+=%-18.(Line:%l\/%L\ Col:%c%V%)\ %<%P " offset
 " Buffers, Splits, Windows {{{1
 "===================================================================================
 "
-"
-"
 "-------------------------------------------------------------------------------
 " Leave the editor with Ctrl-q (KDE): Write all changed buffers and exit Vim
 "-------------------------------------------------------------------------------
@@ -299,10 +303,6 @@ if has("autocmd")
         \ endif
 endif " has("autocmd")
 "
-"-------------------------------------------------------------------------------
-" Leave the editor with Ctrl-q : Write all changed buffers and exit Vim
-"-------------------------------------------------------------------------------
-"nmap  <C-q>    :wqa<CR>
 "
 "===============================================================================
 " Key Mappings {{{1
@@ -395,28 +395,35 @@ function! Toggle_numbering() abort
     endif
 endfunction
 
-"===============================================================================
+"===============================================================================j
+
 " Plugins {{{1
 "===============================================================================
 
 "-------------------------------------------------------------------------------
 " airline {{{2
 "-------------------------------------------------------------------------------
-let g:airline_theme='solarized'
-let g:airline#extensions#branch#enabled=1
-let g:airline#extensions#bufferline#enabled=1
-let g:airline_section_y='%{strlen(&fenc)?&fenc:&enc},[%{&fileformat}][%b,0x%B]'
-let g:airline_section_z='%P : %l/%L: %c%V'
+"if exists(":AirlineRefresh")
+"if exists("g:loaded_airline")
+if &runtimepath =~ 'vim-airline' 
+  let g:airline_theme='solarized'
+  let g:airline#extensions#branch#enabled=1
+  let g:airline#extensions#bufferline#enabled=1
+  let g:airline_section_y='%{strlen(&fenc)?&fenc:&enc},[%{&fileformat}][%b,0x%B]'
+  let g:airline_section_z='%P : %l/%L: %c%V'
+endif
 
 "-------------------------------------------------------------------------------
 " NERDCommenter {{{2
 "-------------------------------------------------------------------------------
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
+"if exists("g:NERDSpaceDelims")
+if exists("g:loaded_nerd_comments")
+  " Add spaces after comment delimiters by default
+  let g:NERDSpaceDelims = 1
 
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-
+  " Use compact syntax for prettified multi-line comments
+  let g:NERDCompactSexyComs = 1
+endif
 "-------------------------------------------------------------------------------
 " NERDTree {{{2
 "-------------------------------------------------------------------------------
@@ -425,6 +432,7 @@ map <Leader>nt :NERDTreeToggle<CR>
 "------------------------------------------------------------------------------
 " syntastic {{{2
 "------------------------------------------------------------------------------
+" if exists("g:airline_loaded")
 " let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
 " let g:syntastic_check_on_open = 1
@@ -446,20 +454,24 @@ map <Leader>nt :NERDTreeToggle<CR>
 "------------------------------------------------------------------------------
 " Neomake {{{2
 "------------------------------------------------------------------------------
-" Gross hack to stop Neomake running when exitting because it creates a zombie cargo check process
-" which holds the lock and never exits. But then, if you only have QuitPre, closing one pane will
-" disable neomake, so BufEnter reenables when you enter another buffer.
-" let s:quitting = 0
-" au QuitPre *.rs let s:quitting = 1
-" au BufEnter *.rs let s:quitting = 0
-" au BufWritePost *.rs if ! s:quitting | Neomake | else | echom "Neomake disabled"| endif
-let g:neomake_warning_sign = {'text': '?'}
+if exists("g:loaded_neomake")
+  " Gross hack to stop Neomake running when exitting because it creates a zombie cargo check process
+  " which holds the lock and never exits. But then, if you only have QuitPre, closing one pane will
+  " disable neomake, so BufEnter reenables when you enter another buffer.
+  " let s:quitting = 0
+  " au QuitPre *.rs let s:quitting = 1
+  " au BufEnter *.rs let s:quitting = 0
+  " au BufWritePost *.rs if ! s:quitting | Neomake | else | echom "Neomake disabled"| endif
+  let g:neomake_warning_sign = {'text': '?'}
+endif
 
 "------------------------------------------------------------------------------
 " deoplete {{{2
 "------------------------------------------------------------------------------
 " install python3 interface with pip3 install neovim
-let g:deoplete#enable_at_startup=1
+if &runtimepath =~ 'deoplete'
+  let g:deoplete#enable_at_startup=1
+endif
 
 "------------------------------------------------------------------------------
 " haskell_doc.vim {{{2
@@ -470,7 +482,8 @@ let g:haddock_browser_callformat = '%s %s'
 "------------------------------------------------------------------------------
 " Rust / Racer {{{2
 "------------------------------------------------------------------------------
-set hidden
-let g:racer_cmd = "/Users/flojo/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
+if &runtimepath =~ 'rust.vim'
+  let g:racer_cmd = "/Users/flojo/.cargo/bin/racer"
+  let g:racer_experimental_completer = 1
+endif
 

@@ -369,13 +369,32 @@ xnoremap  `  s``<Esc>P<Right>
 "-------------------------------------------------------------------------------
 
 "-------------------------------------------------------------------------------
-" airline
+" airline {{{2
 "-------------------------------------------------------------------------------
-" let g:airline_theme='solarized'
-let g:airline#extensions#branch#enabled=1
-let g:airline#extensions#bufferline#enabled=1
-let g:airline_section_y='%{strlen(&fenc)?&fenc:&enc},[%{&fileformat}][%b,0x%B]'
-let g:airline_section_z='%P : %l/%L: %c%V'
+if &runtimepath =~ 'vim-airline' 
+  " let g:airline_theme='solarized'
+  let g:airline#extensions#branch#enabled=1
+  let g:airline#extensions#bufferline#enabled=1
+  let g:airline_section_y='%{strlen(&fenc)?&fenc:&enc},[%{&fileformat}][%b,0x%B]'
+  let g:airline_section_z='%P : %l/%L: %c%V'
+endif
+
+"-------------------------------------------------------------------------------
+" NERDCommenter {{{2
+"-------------------------------------------------------------------------------
+"if exists("g:NERDSpaceDelims")
+if exists("g:loaded_nerd_comments")
+  " Add spaces after comment delimiters by default
+  let g:NERDSpaceDelims = 1
+
+  " Use compact syntax for prettified multi-line comments
+  let g:NERDCompactSexyComs = 1
+endif
+
+"-------------------------------------------------------------------------------
+" NERDTree {{{2
+"-------------------------------------------------------------------------------
+map <Leader>nt :NERDTreeToggle<CR>
 
 "------------------------------------------------------------------------------
 " syntastic
@@ -387,3 +406,11 @@ let g:airline_section_z='%P : %l/%L: %c%V'
 " RainbowParethesis
 "------------------------------------------------------------------------------
 "RainbowParethesisActivate
+
+"------------------------------------------------------------------------------
+" Rust / Racer {{{2
+"------------------------------------------------------------------------------
+if &runtimepath =~ 'rust.vim'
+  let g:racer_cmd = "/Users/flojo/.cargo/bin/racer"
+  let g:racer_experimental_completer = 1
+endif
