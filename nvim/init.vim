@@ -16,7 +16,8 @@ filetype off
 " set the runtime path to include Vundle and initialize
 " set rtp+=~/.vim/bundle/Vundle.vim
 " call plug#begin()
-call plug#begin('~/.config/nvim/plugged')
+" call plug#begin('~/.local.share/nvim/plugged')
+call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 
 
 " General

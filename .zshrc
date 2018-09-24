@@ -55,7 +55,8 @@ plugins=(git)
 
 export PATH="/Users/flojo/Programming/haskell/ghc-mod-sandbox/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
-export XDG_CONFIG_HOME="/Users/flojo/.config"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 export ATOM_HOME="$XDG_CONFIG_HOME/atom"
 
 source $ZSH/oh-my-zsh.sh
