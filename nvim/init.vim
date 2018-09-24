@@ -228,6 +228,8 @@ if has("autocmd")
 
   " Turn on spellchecking if we are in a git commit buffer
   autocmd FileType gitcommit setlocal spell
+  " Change the working directory to the directory containing the current file
+  " autocmd BufEnter * :lchdir %:p:h
 endif
 
 "------------------------------------------------------------------------------
@@ -269,26 +271,15 @@ set statusline+=[%{strlen(&ft)?&ft:'none'},         " filetype
 set statusline+=%{strlen(&fenc)?&fenc:&enc},        " encoding
 set statusline+=%{&fileformat}]                     " file format
 set statusline+=%=                                  " right align
-                                                    " set statusline+=%{synIDattr(synID(line('.'), col('.'), 1), 'name')}\ " highlight
+" set statusline+=%{synIDattr(synID(line('.'), col('.'), 1), 'name')}\ " highlight
 set statusline+=%b,0x%-8B\                          " current char
 set statusline+=%-18.(Line:%l\/%L\ Col:%c%V%)\ %<%P " offset
 
-" Source a global configuration file if available
-" XXX Deprecated, please move your changes here in /etc/vim/vimrc
-"if filereadable("/etc/vim/vimrc.local")
-"  source /etc/vim/vimrc.local
-"endif
 
 "===================================================================================
 " Buffers, Splits, Windows {{{1
 "===================================================================================
 "
-"-------------------------------------------------------------------------------
-" Change the working directory to the directory containing the current file
-"-------------------------------------------------------------------------------
-if has("autocmd")
-  autocmd BufEnter * :lchdir %:p:h
-endif " has("autocmd")
 "
 "
 "-------------------------------------------------------------------------------
