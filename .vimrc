@@ -110,73 +110,158 @@ syntax on
     "silent! let g:airline_theme='solarized'
  endif
 
-" The following are commented out as they cause vim to behave a lot
-" differently from regular Vi. They are highly recommended though.
+
 "-------------------------------------------------------------------------------
-" Various settings
+" Various settings {{{2
 "-------------------------------------------------------------------------------
 set autoindent                  " copy indent from current line
 set autoread                    " read open files again when changed outside Vim
-set autowrite		            " Automatically save before commands like :next and :make
+set autowrite                   " Automatically save before commands like :next and :make
 set ai
 set backspace=indent,eol,start  " backspacing over everything in insert mode
 set backup                      " keep a backup file
+if has('linebreak')
+  set breakindent               " indent wrapped lines to match start
+endif
 set browsedir=current           " which directory to use for the file browser
 set completeopt=menuone,longest,preview
 set complete+=k                 " scan the files given with the 'dictionary' option
 set cpoptions+=$                " mark end of change region with $-sign
+set cursorline                  " highlight the line the cursor is on
 set expandtab                   " replace tabs with spaces
-set foldmethod=indent
+" set foldmethod=indent
 set foldlevel=99
+set foldlevelstart=0            " fold everything by default 
+" if v:version > 703 || v:version == 703 && has('patch541')
+  set formatoptions+=j          " remove comment leader when joining comment lines
+" endif
+set formatoptions+=n            " smart auto-indenting inside numbered lists
 set history=50                  " keep 50 lines of command line history
 set hlsearch                    " highlight the last used search pattern
-set incsearch                   " do incremental search
 set hidden                      " Hide buffers when they are abandoned
-set ignorecase		            " Do case insensitive matching
-set incsearch		            " Incremental search
+set ignorecase                  " Do case insensitive matching
+set incsearch                   " do incremental search:
+set incsearch                   " Incremental search
 set laststatus=2                " Always show status line
-"set listchars=tab:▸\ , eol:¬
-set mouse=a		                " Enable mouse usage (all modes) in terminal1
-set nowrap                      " do not wrap line
+set lazyredraw                  " don't bother updating screen during macro playback
+if has('linebreak')
+  set linebreak                 " wrap long lines at characters in 'breakat'
+endif
+set list                        " Show whitespace
+set listchars=tab:▸-
+set listchars+=trail:·
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=nbsp:×
+set listchars+=eol:¬
+set mouse=a                     " Enable mouse usage (all modes) in terminal1
+"set nowrap                     " do not wrap line
+set nojoinspaces                " don't autoinsert two spaces after '.', '?', '!' for join command
 set number
+if exists('+relativenumber')
+  set relativenumber                  " show relative numbers in gutter
+endif
 set ruler                       " show the cursor position all the time
-set shiftwidth=4                " number of spaces to use for each step of indent
-set softtabstop=4
-set showcmd		                " Show (partial) command in status line.
-set showmatch		            " Show matching brackets.
+set scrolloff=3                 " start scrolling 3 lines before edge of viewport
+set shiftround                  " always indent by multiple of shiftwidth
+set shiftwidth=2                " number of spaces to use for each step of indent
+"set showbreak=>\ \ \
+if has('linebreak')
+  let &showbreak='⤷ '           " ARROW POINTING DOWNWARDS THEN CURVING RIGHTWARDS (U+2937, UTF-8: E2 A4 B7)
+endif
+if has('showcmd')
+  set showcmd                   " Show (partial) command in status line.
+endif
+set showmatch                   " Show matching brackets.
+set sidescrolloff=3             " same as scolloff, but for columns
 set smartcase                   " Do smart case matching
 set smartindent                 " smart autoindenting when starting a new line
-set tabstop=4
+"set softtabstop=4
+if v:progname !=# 'vi'
+  set softtabstop=-1            " use 'shiftwidth' for tab/bs at end of line
+endif
+set switchbuf=usetab            " try to reuse windows/tabs when switching buffers
+set tabstop=2
 set textwidth=80
 set visualbell                  " visual bell instead of beeping
-set wildignore=*.bak,*.o,*.e,*~ " wildmenu: ignore these extensions
-set wildmenu                    " command-line completion in an enhanced mode
+if has('virtualedit')
+  set virtualedit=block         " allow cursor to move where there is no text in visual block mode
+endif
+set wildcharm=<C-z>             " substitue for 'wildchar' (<Tab>) in macros
+if has('wildignore')
+  set wildignore=*.bak,*.o,*.e,*~ " wildmenu: ignore these extensions
+endif
+if has('wildmenu')
+  set wildmenu                  " show options as list when switching buffers etc
+endif
+set wildmode=longest:full,full  " shell-like autocomplete to unambiguous portion
+
 
 if has("autocmd")
-" Syntax of these languages is fussy over tabs Vs spaces
-    autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+  " Syntax of these languages is fussy over tabs Vs spaces
+  autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+
+  " Clojure
+  autocmd BufRead,BufNewFile *.{cljs,boot} setlocal filetype=clojure
+
+  " Turn on spellchecking if we are in a git commit buffer
+  autocmd FileType gitcommit setlocal spell
 endif
+
+"------------------------------------------------------------------------------
+" set greprpg to whatever we have available
+"------------------------------------------------------------------------------
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+  if exists("g:loaded_ctrlp")
+    let g:ctrlp_user_command = 'rg %s --files --hidden --glob "!.git/*"'
+    let g:ctrlp_use_caching = 0
+  endif
+elseif executable('sift')
+  set grepprg=sift\ -nMs\ --no-color\ --binary-skip\ --column\ --no-group\ --git\ --follow
+  set grepformat=%f:%l:%c:%m
+elseif executable('ag')
+  set grepprg=ag\ --vimgrep\ --ignore=\"**.min.js\"
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  if exists("g:loaded_ctrlp")
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching = 0
+  endif
+elseif executable('ack')
+  set grepprg=ack\ --nogroup\ --nocolor\ --ignore-case\ --column
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
+
+
+"------------------------------------------------------------------------------
+" setup statusline  {{{2
+"------------------------------------------------------------------------------
+set statusline=                                     " clear the statusline for when vimrc is reloaded
+set statusline+=%-3.3n\                             " buffer number
+set statusline+=%f\                                 " file name
+set statusline+=%h%m%r%w                            " flags
+set statusline+=[%{strlen(&ft)?&ft:'none'},         " filetype
+set statusline+=%{strlen(&fenc)?&fenc:&enc},        " encoding
+set statusline+=%{&fileformat}]                     " file format
+set statusline+=%=                                  " right align
+                                                    " set statusline+=%{synIDattr(synID(line('.'), col('.'), 1), 'name')}\ " highlight
+set statusline+=%b,0x%-8B\                          " current cha
+set statusline+=%-18.(Line:%l\/%L\ Col:%c%V%)\ %<%P " offset
+
+
 
 inoremap <Up> <NOP>
 inoremap <Down> <NOP>
 inoremap <Left> <NOP>
 inoremap <Right> <NOP>
 inoremap jj <Esc>
-          
+"
 " Set the <Leader> key to comma
 let mapleader=","
 
-set statusline=   " clear the statusline for when vimrc is reloaded
-set statusline+=%-3.3n\                      " buffer number
-set statusline+=%f\                          " file name
-set statusline+=%h%m%r%w                     " flags
-set statusline+=[%{strlen(&ft)?&ft:'none'},   " filetype
-set statusline+=%{strlen(&fenc)?&fenc:&enc},  " encoding
-set statusline+=%{&fileformat}]              " file format
-set statusline+=%=                           " right align
-"set statusline+=%{synIDattr(synID(line('.'), col('.'), 1), 'name')}\  " highlight
-set statusline+=%b,0x%-8B\                   " current char
-set statusline+=%-18.(Line:%l\/%L\ Col:%c%V%)\ %<%P        " offset
 
 " Source a global configuration file if available
 " XXX Deprecated, please move your changes here in /etc/vim/vimrc
