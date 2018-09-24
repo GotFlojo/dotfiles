@@ -2,4 +2,5 @@ nvim/
 !nvim/init.vim
 .*~
 .*.~
+*~
 tags
