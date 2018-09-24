@@ -16,8 +16,8 @@ filetype off
 " set the runtime path to include Vundle and initialize
 " set rtp+=~/.vim/bundle/Vundle.vim
 " call plug#begin()
-" call plug#begin('~/.local.share/nvim/plugged')
-call plug#begin('$XDG_DATA_HOME/nvim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
+"call plug#begin('$XDG_DATA_HOME/nvim/plugged')
 
 
 " General
@@ -28,7 +28,8 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'zirrostig/vim-schlepp'
 "Plug 'kien/ctrlp.vim'
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.local/bin/fzf', 'do': './install --bin' } | Plug 'junegunn/fzf.vim'
+"Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet' | Plug 'Shougo/neosnippet-snippets'
 
@@ -37,7 +38,7 @@ Plug 'wikitopian/hardmode'
 
 " Programming
 Plug 'tpope/vim-fugitive'
-" Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntas"tic'
 " Plug 'neomake/neomake'
 Plug 'w0rp/ale'
 Plug 'scrooloose/nerdcommenter'
@@ -124,10 +125,10 @@ endif
 
 " This enables trueclors but messes up solarized
 " if has("termguicolors")
-"      set termguicolors
+     " set termguicolors
 " endif
-"let g:solarized_termcolors=256
-silent!colorscheme solarized
+" let g:solarized_termcolors=256
+silent! colorscheme solarized
 "}}}
 
 "-------------------------------------------------------------------------------
@@ -472,6 +473,13 @@ endif
 " install python3 interface with pip3 install neovim
 if &runtimepath =~ 'deoplete'
   let g:deoplete#enable_at_startup=1
+  "
+  " Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+  imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k>     <Plug>(neosnippet_expand_target)
+  inoremap <silent><expr><CR> pumvisible() ? deoplete#mappings#close_popup()."\<Plug>(neosnippet_expand_or_jump)" : "\<CR>"
 endif
 
 "------------------------------------------------------------------------------
